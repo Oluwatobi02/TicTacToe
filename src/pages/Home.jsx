@@ -1,8 +1,21 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 const Home = () => {
+  const [username, setUsername] = useState('')
+  const [roomId, setRoomId] = useState(0)
+  const navigate = useNavigate()
+
+  function handleCreate() {
+    navigate(`/game?name=${username}&type=host`)
+  }
+
+  function handleJoin() {
+    navigate(`/game?name=${username}&type=guest&room=${roomId}`)
+  }
   return (
     <>
       <Navbar />
@@ -10,8 +23,12 @@ const Home = () => {
         <h1>Welcome to Tobi's Tic Tac Toe game</h1>
       </div>
       <div className="home-play-button">
-
-      <Link to='/game'><button>Play Tic Tac Toe</button></Link>
+        <input className="username" type="text" min={0} name="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username: " />
+        <div className="join-game-div">
+        <input className="room-number" type="text" name="room" value={roomId} onChange={(e) => setRoomId(e.target.value)}  placeholder="#RoomId: " pattern="\d{4}" />
+        <button onClick={handleJoin}><ArrowForwardIcon /></button>
+        </div>
+      <Link to='/game'><button className="create-game-button" onClick={handleCreate}>create Game</button></Link>
       </div>
     </>
   )

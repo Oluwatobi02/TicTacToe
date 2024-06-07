@@ -1,20 +1,22 @@
 import { addDoc, collection, deleteField, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import db from "./firebase";
 
-export async function createStatus(room) {
+export async function createStatus(hostName) {
+  const code = createCode()
     
     try {
-        const docRef = doc(db, 'game', room)
+        const docRef = doc(db, 'game',code)
         await setDoc(docRef, {
-                'room': room,
+                'room': code,
                 'board': Array(9).fill(null),
                 'status': 'ongoing',
                 'disableClick': false,
                 'screenText': 'start',
-                'currentPlayer': 'X'
+                'currentPlayer': 'X',
+                'hostName': hostName
             })
 
-            const data = getGame(room)
+            const data = getGame(code)
             return data
           } catch (e) {
             console.error("Error adding document: ", e);
@@ -44,3 +46,10 @@ export async function getGame(room) {
   }
   
 
+export function createCode() {
+  let code = ''
+  for (let i = 0; i < 5; i++) {
+    code += (Math.floor(Math.random() * i)).toString()
+  }
+  return code;
+}

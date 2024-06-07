@@ -67,7 +67,39 @@ a {
     margin: auto;
     display: grid;
     place-items: center;
-    transform: translate(0%, 25%)
+    transform: translate(0%, -25%);
+
+    .username {
+        width: 300px;
+        height: 40px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+    }
+   .join-game-div {
+    display: flex;
+    align-items: center;
+
+    .room-number {
+        width: 300px;
+        height: 30px;
+        border-radius: 15px;
+
+    }
+    .room-number:invalid {
+        background-color: #ff4456;
+        border: 1px solid blue;
+
+    }
+
+
+   }
+   .create-game-button {
+    width: 150px;
+    height: 30px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    margin-top: 10px;
+   }
 }
 
 .game-page {
@@ -75,6 +107,8 @@ a {
     height: 100%;
     
 }
+
+
 
 .sidebar {
     height: 100%;
