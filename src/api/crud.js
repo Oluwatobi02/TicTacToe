@@ -1,8 +1,8 @@
 import { addDoc, collection, deleteField, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import db from "./firebase";
 
-export async function createStatus(hostName) {
-  const code = createCode()
+export async function createStatus(hostName, code) {
+
     
     try {
         const docRef = doc(db, 'game',code)
@@ -20,7 +20,6 @@ export async function createStatus(hostName) {
             return data
           } catch (e) {
             console.error("Error adding document: ", e);
-            return null
           }
 }
 

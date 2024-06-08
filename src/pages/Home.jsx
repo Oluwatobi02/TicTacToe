@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { createCode } from "../api/crud";
 
 
 const Home = () => {
@@ -10,7 +11,8 @@ const Home = () => {
   const navigate = useNavigate()
 
   function handleCreate() {
-    navigate(`/game?name=${username}&type=host`)
+    const code = createCode()
+    navigate(`/game?name=${username}&type=host&room=${code}`)
   }
 
   function handleJoin() {
@@ -28,7 +30,7 @@ const Home = () => {
         <input className="room-number" type="text" name="room" value={roomId} onChange={(e) => setRoomId(e.target.value)}  placeholder="#RoomId: " pattern="\d{4}" />
         <button onClick={handleJoin}><ArrowForwardIcon /></button>
         </div>
-      <Link to='/game'><button className="create-game-button" onClick={handleCreate}>create Game</button></Link>
+      <button className="create-game-button" onClick={handleCreate}>create Game</button>
       </div>
     </>
   )
