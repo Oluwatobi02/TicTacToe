@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
-import { createStatus, getGame, updateGameStatus } from "../api/crud"
+import { AImove, createStatus, getGame, updateGameStatus } from "../api/crud"
 import { useLocation } from "react-router-dom"
 import { doc, onSnapshot } from "firebase/firestore"
 import db from "../api/firebase"
@@ -11,9 +11,8 @@ import db from "../api/firebase"
 const Game = () => {
     const location = useLocation();
 
-    
-    
-    const [game, setGame] = useState()
+    const [AI, setAI] = useState(false)
+    const [AIMode, setAIMode] = useState()
     const [player, setPlayer] = useState()
     const [board, setBoard] = useState([]);
     const [currentPlayer, setCurrentPlayer] = useState('');
@@ -30,6 +29,12 @@ const Game = () => {
         const username = queryParams.get('name')
         const playerType = queryParams.get('type')
         const roomId = queryParams.get('room')
+        const aiPlay = queryParams.get('aimode')
+        if (aiPlay === 'true') {
+          setAIMode(true)
+        } else {
+          setAIMode(false)
+        }
         if (playerType === 'host'){  
           setPlayer('X')
           setIsHost(true)
@@ -70,7 +75,32 @@ const Game = () => {
                         return () => unsubscribe();
                         },[location])
 
+          useEffect(() => {
+            // function AIPlayer() {
+            if (AIMode) {
 
+              if (currentPlayer === 'O') {
+  
+              
+                const move = AImove(board)
+                const newBoard = [...board];
+                newBoard[move] = 'O';
+                setBoard(newBoard)
+                setCurrentPlayer(player === 'X' ? 'O'  : 'X')
+                setScreenText(`Player ${currentPlayer==='X' ? 'O' : 'X'}'s turn`)
+                updateGameStatus(room, {
+                  board: newBoard, 
+                  currentPlayer: currentPlayer ==='X' ? 'O' : "X",
+                  screenText: `Player ${currentPlayer === 'X' ? 'O'  : 'X'}'s turn`
+  
+                })
+  
+                 
+                }
+            }
+          
+          
+          }, [AI])
         
         function handleCellClick (index) {
             if (board[index] || currentPlayer !== player) {
@@ -91,6 +121,7 @@ const Game = () => {
                 
                 }
             )
+            setAI((prev) => !prev)
             console.log('still playing')
            
 
@@ -103,11 +134,10 @@ const Game = () => {
         if (isWinner) {
             console.log(isWinner)
             setDisableClick(true)
-            console.log(currentPlayer, 'this qis the currentplayer before winner')
-            setScreenText(`Player ${currentPlayer === 'X' ? 'O' : 'X'} won the game`)
+            setScreenText(`Player ${isWinner} won the game`)
             updateGameStatus(room, {
               disableClick: true,
-              screenText: `Player ${currentPlayer === 'X' ? 'O' : 'X'} won the game`,
+              screenText: `Player ${isWinner} won the game`,
               status: "ended"
               })
               // setTimeout(() => {
@@ -178,7 +208,7 @@ function isGameDraw(board) {
       <Navbar />
       <div className="game-page-body">
         <div>
-            <h1>ROOM : {room}</h1>
+            <h1 className="game-state">ROOM : {room}</h1>
             <h1 className="game-state">{screenText}</h1>
         <div className="game-board">
             {

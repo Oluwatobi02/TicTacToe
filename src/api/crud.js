@@ -34,6 +34,9 @@ export async function getGame(room) {
 
 
   export async function updateGameStatus(room, newStatus) {
+    if (room === undefined) {
+      return
+    }
     const gameRef = doc(db, "game", room);
     
     try {
@@ -51,4 +54,15 @@ export function createCode() {
     code += (Math.floor(Math.random() * i)).toString()
   }
   return code;
+}
+
+
+export function AImove(board) {
+  let openPositions = []
+  for (let i = 0; i< board.length; i++) {
+      if (board[i] === null) {
+          openPositions.push(i)
+      }
+  }
+  return openPositions[Math.floor(Math.random() * openPositions.length)]
 }

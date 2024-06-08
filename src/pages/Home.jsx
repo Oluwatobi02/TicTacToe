@@ -8,15 +8,16 @@ import { createCode } from "../api/crud";
 const Home = () => {
   const [username, setUsername] = useState('')
   const [roomId, setRoomId] = useState(0)
+  const [isChecked, setIsChecked] = useState(false)
   const navigate = useNavigate()
 
   function handleCreate() {
     const code = createCode()
-    navigate(`/game?name=${username}&type=host&room=${code}`)
+    navigate(`/game?name=${username}&type=host&room=${code}&aimode=${isChecked}`)
+    console.log(`${isChecked}`)
   }
-
   function handleJoin() {
-    navigate(`/game?name=${username}&type=guest&room=${roomId}`)
+    navigate(`/game?name=${username}&type=guest&room=${roomId}&aimode=false`)
   }
   return (
     <>
@@ -28,8 +29,9 @@ const Home = () => {
         <input className="username" type="text" min={0} name="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username: " />
         <div className="join-game-div">
         <input className="room-number" type="text" name="room" value={roomId} onChange={(e) => setRoomId(e.target.value)}  placeholder="#RoomId: " pattern="\d{4}" />
-        <button onClick={handleJoin}><ArrowForwardIcon /></button>
+        <button disabled= {isChecked} onClick={handleJoin}><ArrowForwardIcon /></button>
         </div>
+        <input type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
       <button className="create-game-button" onClick={handleCreate}>create Game</button>
       </div>
     </>
