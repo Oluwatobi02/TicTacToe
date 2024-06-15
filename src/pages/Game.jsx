@@ -10,7 +10,6 @@ import db from "../api/firebase"
 
 const Game = () => {
     const location = useLocation();
-
     const [AI, setAI] = useState(false)
     const [AIMode, setAIMode] = useState()
     const [player, setPlayer] = useState()
@@ -76,7 +75,6 @@ const Game = () => {
                         },[location])
 
           useEffect(() => {
-            // function AIPlayer() {
             if (AIMode) {
 
               if (currentPlayer === 'O') {
@@ -140,10 +138,6 @@ const Game = () => {
               screenText: `Player ${isWinner} won the game`,
               status: "ended"
               })
-              // setTimeout(() => {
-            //     restart()
-
-            // },5000)
         }else {
 
         const isDraw = isGameDraw(board)
@@ -157,10 +151,6 @@ const Game = () => {
                     disableClick: true,
                     status: "ended"
                 })
-            // setTimeout(() => {
-            //     restart()
-
-            // },5000)
         }
     }
         
@@ -190,26 +180,19 @@ function isGameDraw(board) {
         }
         return false;
     }
-// function restart() {
-//     createStatus((parseInt(room)).toString())
-//     .then((res))
-//     setRoom((parseInt(room) + 1).toString())
-//     setBoard(Array(9).fill(null))
-//     setCurrentPlayer('X')
-//     setScreenText("Start: Player X's turn")
-//     setDisableClick(false)
-// }
+
 
   return (
     <>
-    <div className="game-page"> 
-      <Sidebar />
-      <div className="game-page-div"> 
-      <Navbar />
-      <div className="game-page-body">
-        <div>
-            <h1 className="game-state">ROOM : {room}</h1>
-            <h1 className="game-state">{screenText}</h1>
+        <Navbar />
+    
+    
+        <div className="game-content-container">
+            <div className="game-stats">
+            <h1>ROOM : {room}</h1>
+            <h1>{screenText}</h1>
+
+            </div>
         <div className="game-board">
             {
                 board?.map((value, index) => (
@@ -217,29 +200,10 @@ function isGameDraw(board) {
                 ))
             }
         </div>
-                  
         </div> 
-        <div className="video-chat">
-            <video id='opponent' className="opponent-video video" playsInline autoPlay>
-                <p className="text">Oluwatobi Olajide</p>
-            </video>
-            <div className="user-video-div">
-
-            <video id="user" className="user-video video" playsInline autoPlay muted>
-                <p className="text">Opponent</p>
-            </video>
-            <div className="tools">
-            <button className="camera-toggle">P</button>
-            <button className="audio-toggle">A</button>
-            </div>
-
-            </div>
-        </div>
-      </div>
-      </div>
+      
     
 
-    </div>
 
     </>
   )

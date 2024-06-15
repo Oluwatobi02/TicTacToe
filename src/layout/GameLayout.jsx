@@ -6,7 +6,7 @@ const GameLayout = () => {
     <SideBar />
       <Board />
       <VideoChat />
-      <button className='end-game'>End Game</button>
+      <button>End Game</button>
     </div>
   )
 }
