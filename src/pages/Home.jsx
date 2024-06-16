@@ -20,7 +20,7 @@ const Home = () => {
     console.log(`${isChecked}`)
   }
   function handleJoin() {
-    if (!username || roomId) {
+    if (!username) {
       return;
     }
     navigate(`/game?name=${username}&type=guest&room=${roomId}&aimode=false`)
