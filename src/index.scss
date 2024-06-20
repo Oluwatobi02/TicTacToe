@@ -71,6 +71,12 @@ input {
     border-radius: 10px;
     height: 50px;
 }
+.join-input:invalid {
+    background-color: palevioletred;
+}
+.join-input:valid {
+    background-color: green($color: #000000);
+}
 
 .create-game {
     width: 5%;
