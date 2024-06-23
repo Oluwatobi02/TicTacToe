@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { createCode } from "../api/crud";
+import { createCode } from "../api/functions";
 
 
 const Home = () => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
-import { AImove, createStatus, getGame, updateGameStatus, getHelp } from "../api/crud"
+import { AImove, createStatus, getGame, updateGameStatus, getHelp } from "../api/functions"
 import { useLocation } from "react-router-dom"
 import { doc, onSnapshot } from "firebase/firestore"
 import db from "../api/firebase"
