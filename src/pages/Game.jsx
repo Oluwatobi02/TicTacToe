@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
-import Sidebar from "../components/Sidebar"
-import { AImove, createStatus, getGame, updateGameStatus } from "../api/crud"
+import { AImove, createStatus, getGame, updateGameStatus, getHelp } from "../api/crud"
 import { useLocation } from "react-router-dom"
 import { doc, onSnapshot } from "firebase/firestore"
 import db from "../api/firebase"
@@ -20,11 +19,12 @@ const Game = () => {
     const [room, setRoom] = useState()
     const [isHost, setIsHost] = useState()
     const [status, setStatus] = useState()
+    const [helper, setHelper] = useState()
+    const [disableHelp, setDisableHelp] = useState(false)
     
     useEffect(() => {
         
         const queryParams = new URLSearchParams(location.search);
-        console.log(queryParams.get('name'), queryParams.get('room'), queryParams.get('type'))
         const username = queryParams.get('name')
         const playerType = queryParams.get('type')
         const roomId = queryParams.get('room')
@@ -53,7 +53,6 @@ const Game = () => {
                     } 
            
             const gameRef = doc(db, 'game', roomId);
-            console.log('gameref', roomId, gameRef)
             const unsubscribe = onSnapshot(gameRef, (docSnapshot) => {
               if (docSnapshot.exists()) {
                 const res = docSnapshot.data();
@@ -76,8 +75,34 @@ const Game = () => {
 
           useEffect(() => {
             if (AIMode) {
+                const isWinner = isThereAWinner(board)
+            if (isWinner) {
+                setDisableClick(true)
+                setScreenText(`Player ${isWinner} won the game`)
+                updateGameStatus(room, {
+                disableClick: true,
+                screenText: `Player ${isWinner} won the game`,
+                status: "ended"
+                })
+                setDisableHelp(false)
+                return
+        }
+                const isDraw = isGameDraw(board)
+        
+                if (isDraw && !isWinner) {
+                    setScreenText('Its a draw')
+                    setDisableClick(true)
+                        updateGameStatus(room, {
+                            screenText: 'Its a draw',
+                            disableClick: true,
+                            status: "ended"
+                        })
+                        setDisableHelp(false)
+                        return
+                }
 
               if (currentPlayer === 'O') {
+
   
               
                 const move = AImove(board)
@@ -95,6 +120,7 @@ const Game = () => {
   
                  
                 }
+
             }
           
           
@@ -107,7 +133,6 @@ const Game = () => {
             
             const newBoard =  [...board];
             newBoard[index] = player
-            console.log(newBoard)
             setBoard(newBoard);
             setCurrentPlayer(player === 'X' ? 'O'  : 'X')
             setScreenText(`Player ${currentPlayer === 'X' ? 'O'  : 'X'}'s turn`)
@@ -120,7 +145,7 @@ const Game = () => {
                 }
             )
             setAI((prev) => !prev)
-            console.log('still playing')
+
            
 
     }
@@ -130,7 +155,6 @@ const Game = () => {
         }
         const isWinner = isThereAWinner(board)
         if (isWinner) {
-            console.log(isWinner)
             setDisableClick(true)
             setScreenText(`Player ${isWinner} won the game`)
             updateGameStatus(room, {
@@ -138,10 +162,10 @@ const Game = () => {
               screenText: `Player ${isWinner} won the game`,
               status: "ended"
               })
+              setDisableHelp(false)
         }else {
 
         const isDraw = isGameDraw(board)
-        console.log(isDraw)
         
         if (isDraw && !isWinner) {
             setScreenText('Its a draw')
@@ -151,6 +175,7 @@ const Game = () => {
                     disableClick: true,
                     status: "ended"
                 })
+                setDisableHelp(false)
         }
     }
         
@@ -199,6 +224,14 @@ function isGameDraw(board) {
                     <button disabled={disableClick} className="cell" key={index} onClick={() => handleCellClick(index)}>{value}</button>
                 ))
             }
+            <button disabled={disableHelp} onClick={async () => {
+                console.log(board, currentPlayer)
+                const position = await getHelp(currentPlayer, board)
+                setHelper(position)
+                setDisableHelp(true)
+            }
+                }>Get Help</button>
+            <h1>{helper}</h1>
         </div>
         </div> 
       

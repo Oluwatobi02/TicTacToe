@@ -19,7 +19,6 @@ const Home = () => {
     }
     const code = createCode()
     navigate(`/game?name=${username}&type=host&room=${code}&aimode=${isChecked}`)
-    console.log(`${isChecked}`)
   }
   function handleJoin() {
     if (!username) {
