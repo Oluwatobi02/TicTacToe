@@ -3,8 +3,7 @@ import db from "./firebase";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OpenAI_API_KEY,
-  dangerouslyAllowBrowser: true,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function createStatus(hostName, code) {
