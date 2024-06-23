@@ -21,7 +21,6 @@ const Game = () => {
     const [status, setStatus] = useState()
     const [helper, setHelper] = useState()
     const [disableHelp, setDisableHelp] = useState(false)
-    
     useEffect(() => {
         
         const queryParams = new URLSearchParams(location.search);

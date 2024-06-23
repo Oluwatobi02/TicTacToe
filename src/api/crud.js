@@ -1,9 +1,9 @@
 import { addDoc, collection, deleteField, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import db from "./firebase";
 import OpenAI from "openai";
-
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
 });
 
 export async function createStatus(hostName, code) {
